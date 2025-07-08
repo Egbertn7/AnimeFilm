@@ -1,30 +1,26 @@
 import AnimeList from "@/components/AnimeList";
 import Link from "next/link";
+import Header from "@/components/AnimeList/header";
 
 const Home = async () => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/top/anime?limit=8`
-  );
-  const anime = await response.json();
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/top/anime?limit=8`);
+  const topAnime = await response.json();
   // console.log(animeData.data);
 
   return (
     <div>
-      <div className="flex justify-between items-center p-4">
-        <h1 className="text-2xl font-bold">Paling Populer</h1>
-        <Link href="/anime" className="md:text-xl text-md underline hover:text-cyan-600 transition-all">
-          Lihat Semua
-        </Link>
-      </div>
-      <div className="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4 px-4">
-        {anime.data.map((data, index) => {
-          return (
-            <div key={`${data.mal_id}-${index}`}>
-              <AnimeList title={data.title} images={data.images.webp.image_url} id={data.mal_id} />
-            </div>
-          );
-        })}
-      </div>
+      {/* anime paling populer */}
+      <section>
+        <Header title="Paling Populer" linkHref="/populer" linkTitle="Lihat Semua" />
+        <AnimeList api={topAnime} />
+      </section>
+
+      {/* anime baru */}
+      <section>
+        <Header title="Paling Baru" linkHref="/new" linkTitle="Ikut Sekarang" />
+        <AnimeList api={topAnime} />
+      </section>
+
     </div>
   );
 };
